@@ -10,8 +10,11 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.anelcc.instagram.ui.theme.InstagramTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,11 +25,18 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    Greeting("Android")
+//                    Greeting("Android")
+                    instagramApp()
                 }
             }
         }
     }
+}
+
+@Composable
+fun instagramApp() {
+    val vm = hiltViewModel<IgViewModule>()
+    val i = 0
 }
 
 @Composable
@@ -38,6 +48,8 @@ fun Greeting(name: String) {
 @Composable
 fun DefaultPreview() {
     InstagramTheme {
-        Greeting("Android")
+//        Greeting("Android")
+
+        instagramApp()
     }
 }
