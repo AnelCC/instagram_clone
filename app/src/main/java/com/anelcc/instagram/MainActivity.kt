@@ -43,13 +43,13 @@ sealed class DestinationScreen(val route: String) {
 
 @Composable
 fun instagramApp() {
-    val vm = hiltViewModel<IgViewModule>()
+    val vm = hiltViewModel<IgViewModel>()
     val navController = rememberNavController()
     val i = 0
     
     NavHost(navController = navController, startDestination = DestinationScreen.SignUp.route) {
         composable(DestinationScreen.SignUp.route) {
-            SignupScreen(navController = navController, viewModule = vm)
+            SignupScreen(navController = navController, viewModel = vm)
         }
     }
 }

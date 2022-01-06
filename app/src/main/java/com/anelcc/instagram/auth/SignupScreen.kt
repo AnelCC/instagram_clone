@@ -11,7 +11,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -21,12 +20,12 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.anelcc.instagram.IgViewModule
+import com.anelcc.instagram.IgViewModel
 import com.anelcc.instagram.R
 
 
 @Composable
-fun SignupScreen(navController: NavController, viewModule: IgViewModule) {
+fun SignupScreen(navController: NavController, viewModel: IgViewModel) {
     Box(modifier = Modifier.fillMaxHeight()) {
         Column(modifier = Modifier
             .fillMaxWidth()
@@ -56,7 +55,7 @@ fun SignupScreen(navController: NavController, viewModule: IgViewModule) {
                 label = { Text(text = "Username") })
             OutlinedTextField(
                 value = emailState.value,
-                onValueChange = { usernameState.value = it },
+                onValueChange = { emailState.value = it },
                 modifier = Modifier.padding(8.dp),
                 label = { Text(text = "Username") })
             OutlinedTextField(
@@ -65,7 +64,13 @@ fun SignupScreen(navController: NavController, viewModule: IgViewModule) {
                 modifier = Modifier.padding(8.dp),
                 label = { Text(text = "Username") })
 
-            Button(onClick = { /*TODO*/ },
+            Button(onClick = {
+                                viewModel.onSignUp(
+                                    usernameState.value.text,
+                                    emailState.value.text,
+                                    passState.value.text
+                                )
+                             },
                 modifier = Modifier.padding(8.dp)) {
                 Text(text = "Sing Up")
             }
