@@ -2,6 +2,7 @@ package com.anelcc.instagram
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import com.anelcc.instagram.data.Event
 import com.anelcc.instagram.data.UserData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -23,13 +24,14 @@ class IgViewModel @Inject constructor(
     var singIn = mutableStateOf(false)
     var isProgress = mutableStateOf(false)
     var userData = mutableStateOf<UserData?>(null)
+    var popNotification = mutableStateOf<Event<String>?>(null)
 
     fun onSignUp(userName: String, email: String, pass: String) {
         isProgress.value = true
 
         db.collection(USERS).whereEqualTo("username", userName).get()
             .addOnSuccessListener { documents ->
-                if (documents.size() == 0) {
+                if (documents.size() > 0) {
                     handledException(customMessage = "Username already exist")
                     isProgress.value = false
                 } else {
@@ -48,8 +50,11 @@ class IgViewModel @Inject constructor(
             .addOnFailureListener {  }
     }
 
-    fun handledException(exception: Exception? = null, customMessage: String? = "") {
-
+    private fun handledException(exception: Exception? = null, customMessage: String = "") {
+        exception?.printStackTrace()
+        val errorMsg =  exception?.message ?: ""
+        val message = if (customMessage.isEmpty()) { errorMsg } else { "$customMessage: $errorMsg" }
+        popNotification.value = Event(message)
     }
 
 }

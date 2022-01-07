@@ -57,12 +57,12 @@ fun SignupScreen(navController: NavController, viewModel: IgViewModel) {
                 value = emailState.value,
                 onValueChange = { emailState.value = it },
                 modifier = Modifier.padding(8.dp),
-                label = { Text(text = "Username") })
+                label = { Text(text = "Email") })
             OutlinedTextField(
                 value = passState.value,
                 onValueChange = { passState.value = it },
                 modifier = Modifier.padding(8.dp),
-                label = { Text(text = "Username") })
+                label = { Text(text = "Password") })
 
             Button(onClick = {
                                 viewModel.onSignUp(
