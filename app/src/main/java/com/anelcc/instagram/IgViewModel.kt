@@ -6,6 +6,7 @@ import com.anelcc.instagram.data.Event
 import com.anelcc.instagram.data.UserData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.storage.FirebaseStorage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.lang.Exception
@@ -21,19 +22,27 @@ class IgViewModel @Inject constructor(
 ) : ViewModel() {
 
 
-    private var isProgress = mutableStateOf(false)
+    private var isInProgress = mutableStateOf(false)
     var singIn = mutableStateOf(false)
     var userData = mutableStateOf<UserData?>(null)
     var popNotification = mutableStateOf<Event<String>?>(null)
 
+    init {
+//        auth.signOut()
+        val currentUser = auth.currentUser
+        singIn.value = currentUser != null
+        currentUser?.uid?.let { uid ->
+           getUserData(uid)
+        }
+    }
     fun onSignUp(userName: String, email: String, pass: String) {
-        isProgress.value = true
+        isInProgress.value = true
 
         db.collection(USERS).whereEqualTo("username", userName).get()
             .addOnSuccessListener { documents ->
                 if (documents.size() > 0) {
                     handledException(customMessage = "Username already exist")
-                    isProgress.value = false
+                    isInProgress.value = false
                 } else {
                     auth.createUserWithEmailAndPassword(email, pass)
                         .addOnCompleteListener { task ->
@@ -43,7 +52,7 @@ class IgViewModel @Inject constructor(
                             } else {
                                 handledException(customMessage = "signed failed")
                             }
-                            isProgress.value = false
+                            isInProgress.value = false
                         }
                         .addOnFailureListener {  }
                 }
@@ -66,36 +75,46 @@ class IgViewModel @Inject constructor(
             following = userData.value?.following
         )
         uid?.let {
-            isProgress.value = true
+            isInProgress.value = true
             db.collection(USERS).document(uid).get()
                 .addOnSuccessListener {
                     if (it.exists()) {
                         it.reference.update(userData.toMap())
                             .addOnSuccessListener {
                                 this.userData.value = userData
-                                isProgress.value = false
+                                isInProgress.value = false
                             }
                             .addOnFailureListener {
                                 handledException(customMessage = "Cannot Update user")
-                                isProgress.value =false
+                                isInProgress.value =false
 
                             }
                     } else {
                         db.collection(USERS).document(uid).set(userData)
                         getUserData(uid)
-                        isProgress.value = false
+                        isInProgress.value = false
                     }
                 }
                 .addOnFailureListener { exception ->
                     handledException(exception, "Cannot create user")
-                    isProgress.value = false
+                    isInProgress.value = false
                 }
         }
     }
 
     private fun getUserData(uid: String) {
-
-
+        isInProgress.value = true
+        db.collection(USERS).document(uid).get()
+            .addOnSuccessListener {
+                val user = it.toObject<UserData>()
+                userData.value = user
+                isInProgress.value = false
+//                popNotification.value = Event("User data retrieve Successfully")
+            }
+            .addOnFailureListener { exception ->
+                handledException(exception, "Cannot retrieve user data")
+                isInProgress.value = false
+            }
     }
 
     private fun handledException(exception: Exception? = null, customMessage: String = "") {
