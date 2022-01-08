@@ -21,8 +21,8 @@ class IgViewModel @Inject constructor(
 ) : ViewModel() {
 
 
+    private var isProgress = mutableStateOf(false)
     var singIn = mutableStateOf(false)
-    var isProgress = mutableStateOf(false)
     var userData = mutableStateOf<UserData?>(null)
     var popNotification = mutableStateOf<Event<String>?>(null)
 
@@ -39,6 +39,7 @@ class IgViewModel @Inject constructor(
                         .addOnCompleteListener { task ->
                             if (task.isSuccessful) {
                                 singIn.value = true
+                                createOrUpdateProfile(userName = userName)
                             } else {
                                 handledException(customMessage = "signed failed")
                             }
@@ -48,6 +49,53 @@ class IgViewModel @Inject constructor(
                 }
             }
             .addOnFailureListener {  }
+    }
+
+    private fun createOrUpdateProfile(
+        name: String? = null,
+        userName: String? = null,
+        bio: String? = null,
+        imageUrl: String? = null) {
+        val uid = auth.currentUser?.uid
+        val userData = UserData(
+            userId = uid,
+            name = name ?: userData.value?.name,
+            username = userName ?: userData.value?.username,
+            imageURL = imageUrl ?: userData.value?.imageURL,
+            bio = bio ?: userData.value?.bio,
+            following = userData.value?.following
+        )
+        uid?.let {
+            isProgress.value = true
+            db.collection(USERS).document(uid).get()
+                .addOnSuccessListener {
+                    if (it.exists()) {
+                        it.reference.update(userData.toMap())
+                            .addOnSuccessListener {
+                                this.userData.value = userData
+                                isProgress.value = false
+                            }
+                            .addOnFailureListener {
+                                handledException(customMessage = "Cannot Update user")
+                                isProgress.value =false
+
+                            }
+                    } else {
+                        db.collection(USERS).document(uid).set(userData)
+                        getUserData(uid)
+                        isProgress.value = false
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    handledException(exception, "Cannot create user")
+                    isProgress.value = false
+                }
+        }
+    }
+
+    private fun getUserData(uid: String) {
+
+
     }
 
     private fun handledException(exception: Exception? = null, customMessage: String = "") {
