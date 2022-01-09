@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.anelcc.instagram.IgViewModel
 import com.anelcc.instagram.R
+import com.anelcc.instagram.main.CommonProgressSpinner
 
 
 @Composable
@@ -78,10 +79,17 @@ fun SignupScreen(navController: NavController, viewModel: IgViewModel) {
 
             Text(text = "Are you already an User? Go To Login ->",
                 color = Color.Blue,
-                modifier = Modifier.padding(8.dp).clickable {
+                modifier = Modifier
+                    .padding(8.dp)
+                    .clickable {
 
-                }
+                    }
             )
+        }
+        val isLoading = viewModel.isInProgress.value
+
+        if (isLoading) {
+            CommonProgressSpinner()
         }
     }
 }

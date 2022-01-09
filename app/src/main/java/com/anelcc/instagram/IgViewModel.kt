@@ -22,7 +22,7 @@ class IgViewModel @Inject constructor(
 ) : ViewModel() {
 
 
-    private var isInProgress = mutableStateOf(false)
+    var isInProgress = mutableStateOf(false)
     var singIn = mutableStateOf(false)
     var userData = mutableStateOf<UserData?>(null)
     var popNotification = mutableStateOf<Event<String>?>(null)
