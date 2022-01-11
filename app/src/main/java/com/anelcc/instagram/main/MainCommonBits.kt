@@ -13,10 +13,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import com.anelcc.instagram.IgViewModel
+import androidx.navigation.NavController
+import com.anelcc.instagram.DestinationScreen
+import com.anelcc.instagram.InstagramViewModel
 
 @Composable
-fun NotificationMessage(viewModel: IgViewModel) {
+fun NotificationMessage(viewModel: InstagramViewModel) {
     val notificationState = viewModel.popNotification.value
     val notificationMessage = notificationState?.getContentOrNull()
 
@@ -38,5 +40,12 @@ fun CommonProgressSpinner() {
         verticalAlignment = Alignment.CenterVertically
     ) {
         CircularProgressIndicator()
+    }
+}
+
+fun navigateTo(navController: NavController, destination: DestinationScreen) {
+    navController.navigate(destination.route) {
+        popUpTo(destination.route)
+        launchSingleTop = true
     }
 }

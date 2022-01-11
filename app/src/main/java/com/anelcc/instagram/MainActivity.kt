@@ -15,6 +15,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.anelcc.instagram.auth.LoginScreen
 import com.anelcc.instagram.auth.SignupScreen
 import com.anelcc.instagram.main.NotificationMessage
 import com.anelcc.instagram.ui.theme.InstagramTheme
@@ -41,17 +42,21 @@ class MainActivity : ComponentActivity() {
 
 sealed class DestinationScreen(val route: String) {
     object SignUp: DestinationScreen("signUp")
+    object Login: DestinationScreen("login")
 }
 
 @Composable
 fun instagramApp() {
-    val vm = hiltViewModel<IgViewModel>()
+    val vm = hiltViewModel<InstagramViewModel>()
     val navController = rememberNavController()
 
     NotificationMessage(viewModel = viewModel())
     NavHost(navController = navController, startDestination = DestinationScreen.SignUp.route) {
         composable(DestinationScreen.SignUp.route) {
             SignupScreen(navController = navController, viewModel = vm)
+        }
+        composable(DestinationScreen.Login.route) {
+            LoginScreen(navController = navController, viewModel = vm)
         }
     }
 }

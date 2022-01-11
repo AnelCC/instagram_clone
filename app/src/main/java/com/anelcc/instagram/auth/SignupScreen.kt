@@ -20,13 +20,15 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.anelcc.instagram.IgViewModel
+import com.anelcc.instagram.DestinationScreen
+import com.anelcc.instagram.InstagramViewModel
 import com.anelcc.instagram.R
 import com.anelcc.instagram.main.CommonProgressSpinner
+import com.anelcc.instagram.main.navigateTo
 
 
 @Composable
-fun SignupScreen(navController: NavController, viewModel: IgViewModel) {
+fun SignupScreen(navController: NavController, viewModel: InstagramViewModel) {
     Box(modifier = Modifier.fillMaxHeight()) {
         Column(modifier = Modifier
             .fillMaxWidth()
@@ -82,7 +84,7 @@ fun SignupScreen(navController: NavController, viewModel: IgViewModel) {
                 modifier = Modifier
                     .padding(8.dp)
                     .clickable {
-
+                        navigateTo(navController, DestinationScreen.Login)
                     }
             )
         }

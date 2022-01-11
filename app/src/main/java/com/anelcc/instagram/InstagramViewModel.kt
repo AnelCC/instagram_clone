@@ -15,7 +15,7 @@ import javax.inject.Inject
 const val USERS = "users"
 
 @HiltViewModel
-class IgViewModel @Inject constructor(
+class InstagramViewModel @Inject constructor(
     val auth: FirebaseAuth,
     val db : FirebaseFirestore,
     val storage: FirebaseStorage
