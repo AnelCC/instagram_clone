@@ -14,6 +14,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.TextFieldValue
@@ -29,6 +30,9 @@ import com.anelcc.instagram.main.navigateTo
 
 @Composable
 fun SignupScreen(navController: NavController, viewModel: InstagramViewModel) {
+
+    val focus = LocalFocusManager.current
+
     Box(modifier = Modifier.fillMaxHeight()) {
         Column(modifier = Modifier
             .fillMaxWidth()
@@ -68,12 +72,13 @@ fun SignupScreen(navController: NavController, viewModel: InstagramViewModel) {
                 label = { Text(text = "Password") })
 
             Button(onClick = {
-                                viewModel.onSignUp(
-                                    usernameState.value.text,
-                                    emailState.value.text,
-                                    passState.value.text
-                                )
-                             },
+                focus.clearFocus(force = true)
+                    viewModel.onSignUp(
+                        usernameState.value.text,
+                        emailState.value.text,
+                        passState.value.text
+                    )
+                 },
                 modifier = Modifier.padding(8.dp)) {
                 Text(text = "Sing Up")
             }
