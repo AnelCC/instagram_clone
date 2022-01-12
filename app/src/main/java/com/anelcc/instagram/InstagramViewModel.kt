@@ -36,6 +36,11 @@ class InstagramViewModel @Inject constructor(
         }
     }
     fun onSignUp(userName: String, email: String, pass: String) {
+        if (userName.isEmpty() or email.isEmpty() or pass.isEmpty()) {
+            handledException(customMessage = "Please fill in all fields")
+            return
+        }
+
         isInProgress.value = true
 
         db.collection(USERS).whereEqualTo("username", userName).get()
