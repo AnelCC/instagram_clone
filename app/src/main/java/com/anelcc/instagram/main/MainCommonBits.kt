@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -47,5 +49,18 @@ fun navigateTo(navController: NavController, destination: DestinationScreen) {
     navController.navigate(destination.route) {
         popUpTo(destination.route)
         launchSingleTop = true
+    }
+}
+
+@Composable
+fun CheckSingIn(viewModel: InstagramViewModel, navController: NavController) {
+    val alreadyLogin = remember() { mutableStateOf(false) }
+    val signIn = viewModel.singIn.value
+
+    if (signIn && !alreadyLogin.value) {
+        alreadyLogin.value = true
+        navController.navigate(DestinationScreen.Feed.route){
+            popUpTo(0)
+        }
     }
 }

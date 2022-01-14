@@ -27,11 +27,14 @@ import com.anelcc.instagram.DestinationScreen
 import com.anelcc.instagram.InstagramViewModel
 import com.anelcc.instagram.main.navigateTo
 import com.anelcc.instagram.R
+import com.anelcc.instagram.main.CheckSingIn
 import com.anelcc.instagram.main.CommonProgressSpinner
 
 
 @Composable
 fun LoginScreen(navController: NavController, viewModel: InstagramViewModel) {
+
+    CheckSingIn(viewModel = viewModel, navController = navController)
 
     val focus = LocalFocusManager.current
 
