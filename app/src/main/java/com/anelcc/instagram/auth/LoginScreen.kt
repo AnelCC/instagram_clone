@@ -71,6 +71,7 @@ fun LoginScreen(navController: NavController, viewModel: InstagramViewModel) {
                 label = { Text(text = "Password") })
 
             Button(onClick = {
+                viewModel.onLogin(emailState.value.text, passState.value.text)
                 focus.clearFocus(force = true)
             },
                 modifier = Modifier.padding(8.dp)) {

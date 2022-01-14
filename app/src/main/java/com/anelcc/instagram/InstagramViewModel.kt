@@ -122,6 +122,32 @@ class InstagramViewModel @Inject constructor(
             }
     }
 
+    fun onLogin(email: String, pass: String) {
+        if (email.isEmpty() or pass.isEmpty()) {
+            handledException(customMessage = "Please fill in all fields")
+            return
+        }
+        isInProgress.value = true
+        auth.signInWithEmailAndPassword(email, pass)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    singIn.value = true
+                    isInProgress.value = false
+                    auth.currentUser?.uid?.let { uid ->
+                        handledException(customMessage = "Login success")
+                        getUserData(uid)
+                    }
+                } else {
+                    handledException(task.exception, "Login failed")
+                    isInProgress.value = false
+                }
+            }
+            .addOnFailureListener { exc ->
+                handledException(exc, "Login failed")
+                isInProgress.value = false
+            }
+    }
+
     private fun handledException(exception: Exception? = null, customMessage: String = "") {
         exception?.printStackTrace()
         val errorMsg =  exception?.message ?: ""
