@@ -19,6 +19,8 @@ import com.anelcc.instagram.auth.LoginScreen
 import com.anelcc.instagram.auth.SignupScreen
 import com.anelcc.instagram.main.FeedScreen
 import com.anelcc.instagram.main.NotificationMessage
+import com.anelcc.instagram.main.PostScreen
+import com.anelcc.instagram.main.SearchScreen
 import com.anelcc.instagram.ui.theme.InstagramTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -45,6 +47,8 @@ sealed class DestinationScreen(val route: String) {
     object SignUp: DestinationScreen("signUp")
     object Login: DestinationScreen("login")
     object Feed: DestinationScreen("feed")
+    object Search: DestinationScreen("search")
+    object Post: DestinationScreen("post")
 }
 
 @Composable
@@ -62,6 +66,12 @@ fun instagramApp() {
         }
         composable(DestinationScreen.Feed.route) {
             FeedScreen(navController = navController, viewModel = vm)
+        }
+        composable(DestinationScreen.Search.route) {
+            SearchScreen(navController = navController, viewModel = vm)
+        }
+        composable(DestinationScreen.Post.route) {
+            PostScreen(navController = navController, viewModel = vm)
         }
     }
 }

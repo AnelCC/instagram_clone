@@ -12,7 +12,7 @@ import com.anelcc.instagram.InstagramViewModel
 
 
 @Composable
-fun FeedScreen(navController: NavController, viewModel: InstagramViewModel) {
+fun PostScreen(navController: NavController, viewModel: InstagramViewModel) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -20,11 +20,9 @@ fun FeedScreen(navController: NavController, viewModel: InstagramViewModel) {
     ) {
         Column(
             modifier = Modifier.weight(1F)
-        ) {
-            Text(text = " Feed Screen ")
-        }
+        ) {Text(text = "Post Screen") }
         BottomNavigationMenu(
-            selectedItem = BottomNavigationItem.FEED,
+            selectedItem = BottomNavigationItem.POST,
             navController = navController
         )
     }

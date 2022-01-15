@@ -10,9 +10,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavController
 import com.anelcc.instagram.InstagramViewModel
 
-
 @Composable
-fun FeedScreen(navController: NavController, viewModel: InstagramViewModel) {
+fun SearchScreen(navController: NavController, viewModel: InstagramViewModel) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -21,10 +20,10 @@ fun FeedScreen(navController: NavController, viewModel: InstagramViewModel) {
         Column(
             modifier = Modifier.weight(1F)
         ) {
-            Text(text = " Feed Screen ")
+            Text(text = "Search Screen")
         }
         BottomNavigationMenu(
-            selectedItem = BottomNavigationItem.FEED,
+            selectedItem = BottomNavigationItem.SEARCH,
             navController = navController
         )
     }
