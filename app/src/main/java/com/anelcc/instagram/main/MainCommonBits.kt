@@ -67,7 +67,7 @@ fun CheckSingIn(viewModel: InstagramViewModel, navController: NavController) {
 
     if (signIn && !alreadyLogin.value) {
         alreadyLogin.value = true
-        navController.navigate(DestinationScreen.Feed.route){
+        navController.navigate(DestinationScreen.Post.route){
             popUpTo(0)
         }
     }

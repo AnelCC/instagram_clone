@@ -67,16 +67,20 @@ fun PostScreen(navController: NavController, viewModel: InstagramViewModel) {
                 elevation = ButtonDefaults.elevation(defaultElevation = 0.dp, pressedElevation = 0.dp, disabledElevation = 0.dp),
                 shape = RoundedCornerShape(10)
             ){
-                Text(text = "Edit Profile", color = Color.Black)
+                Text(text = "Edit Profile")
             }
             Column(modifier = Modifier.weight(1F)) {
-                Text(text = "Post List", color = Color.Black)
+                Text(text = "Post List")
             }
         }
         BottomNavigationMenu(
             selectedItem = BottomNavigationItem.POST,
             navController = navController
         )
+
+
+        if (isLoading)
+            CommonProgressSpinner()
     }
 
 
